@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-cream: #FFFDF7;
+  --text-charcoal: #2E2E2E;
+  --doraemon-blue: #0A84FF;
+  --collar-red: #FF4D4D;
+  --bell-gold: #FFD447;
+}
+
+html,
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-charcoal);
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom whimsical scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFFDF7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C7E2F8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7EC8E3;
+}
+
+/* Custom pulse and glow utilities */
+.glow-gold {
+  box-shadow: 0 0 20px 2px rgba(255, 212, 71, 0.45);
+}
+
+.glow-blue {
+  box-shadow: 0 0 24px 2px rgba(10, 132, 255, 0.25);
+}
+
+/* Shimmer animation effect for skeleton loader */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(239, 235, 225, 0.6) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(239, 235, 225, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Golden sweep celebratory shimmer */
+.golden-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.golden-sweep::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 212, 71, 0.35) 50%,
+    transparent 70%
+  );
+  transform: rotate(25deg);
+  animation: sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translate(-100%, -100%) rotate(25deg);
+  }
+  100% {
+    transform: translate(100%, 100%) rotate(25deg);
+  }
+}
