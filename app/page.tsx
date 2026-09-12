@@ -11,6 +11,7 @@ import { EditWishModal } from "@/components/EditWishModal";
 import { WishDetailModal } from "@/components/WishDetailModal";
 import { GrantedCelebration } from "@/components/GrantedCelebration";
 import { Footer } from "@/components/Footer";
+import { PeekingDoraemonCorner } from "@/components/Mascot";
 
 export default function HomePage() {
   return (
@@ -38,6 +39,9 @@ export default function HomePage() {
       <EditWishModal />
       <WishDetailModal />
       <GrantedCelebration />
+
+      {/* Bottom Left Mascot */}
+      <PeekingDoraemonCorner />
 
       {/* Footer */}
       <Footer />

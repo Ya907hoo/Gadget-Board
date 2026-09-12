@@ -6,12 +6,12 @@ import { CATEGORIES } from "@/lib/validation";
 import { WishCategory } from "@/lib/types";
 import { motion } from "framer-motion";
 import {
-  Sparkles,
+  Smile,
   BookOpen,
   Compass,
   Zap,
   Utensils,
-  Smile,
+  Star,
   Layers,
 } from "lucide-react";
 
@@ -21,19 +21,19 @@ export function CategoryFilter() {
   const getCategoryIcon = (cat: string) => {
     switch (cat) {
       case "Daily Life":
-        return <Smile className="w-4 h-4" />;
+        return <Smile className="w-4 h-4 text-blue-500" />;
       case "Study & School":
-        return <BookOpen className="w-4 h-4" />;
+        return <BookOpen className="w-4 h-4 text-blue-500" />;
       case "Travel & Time":
-        return <Compass className="w-4 h-4" />;
+        return <Compass className="w-4 h-4 text-blue-500" />;
       case "Secret Gadgets":
-        return <Zap className="w-4 h-4" />;
+        return <Zap className="w-4 h-4 text-blue-500" />;
       case "Food & Dorayaki":
-        return <Utensils className="w-4 h-4" />;
+        return <Utensils className="w-4 h-4 text-blue-500" />;
       case "Fun & Mischief":
-        return <Sparkles className="w-4 h-4" />;
+        return <Star className="w-4 h-4 text-blue-500" />;
       default:
-        return <Layers className="w-4 h-4" />;
+        return <Layers className="w-4 h-4 text-white" />;
     }
   };
 
@@ -45,8 +45,8 @@ export function CategoryFilter() {
   const allTabs: (WishCategory | "All")[] = ["All", ...CATEGORIES];
 
   return (
-    <div className="mb-6 overflow-x-auto pb-2 scrollbar-none">
-      <div className="flex items-center gap-2 min-w-max">
+    <div className="mb-5 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex items-center gap-2.5 min-w-max">
         {allTabs.map((cat) => {
           const isSelected = category === cat;
           const count = getCount(cat);
@@ -55,23 +55,21 @@ export function CategoryFilter() {
             <motion.button
               key={cat}
               whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setCategory(cat)}
-              className={`relative flex items-center gap-2 px-4 py-2 rounded-full font-heading font-bold text-xs sm:text-sm transition-colors duration-200 cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full font-heading font-extrabold text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-sm ${
                 isSelected
-                  ? "bg-doraemon-blue text-white shadow-doraemon-card"
-                  : "bg-white text-doraemon-charcoal hover:bg-doraemon-cream border border-doraemon-cream-border"
+                  ? "bg-[#0A84FF] text-white shadow-blue-200 border-2 border-transparent"
+                  : "bg-white text-slate-700 hover:bg-sky-50 border border-sky-200/80"
               }`}
             >
-              <span className={isSelected ? "text-white" : "text-doraemon-blue"}>
-                {getCategoryIcon(cat)}
+              <span className={isSelected ? "text-white" : ""}>
+                {cat === "All" ? <Layers className="w-4 h-4 text-white" /> : getCategoryIcon(cat)}
               </span>
               <span>{cat}</span>
               <span
-                className={`text-[11px] px-1.5 py-0.5 rounded-full font-semibold ${
-                  isSelected
-                    ? "bg-white/25 text-white"
-                    : "bg-doraemon-cream text-doraemon-charcoal-muted"
+                className={`text-[11px] font-bold px-1.5 py-0.2 rounded-full ${
+                  isSelected ? "bg-white/30 text-white" : "text-slate-400"
                 }`}
               >
                 {count}

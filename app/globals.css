@@ -8,6 +8,7 @@
   --doraemon-blue: #0A84FF;
   --collar-red: #FF4D4D;
   --bell-gold: #FFD447;
+  --ink: #17222E;
 }
 
 html,
@@ -19,10 +20,105 @@ body {
   min-height: 100vh;
 }
 
-/* Custom whimsical scrollbar */
+/* Paper grain so flat comic colours don't look sterile */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(23, 34, 46, 0.05) 0.5px, transparent 0.6px);
+  background-size: 4px 4px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Comic / manga treatment
+ * ------------------------------------------------------------------ */
+
+/* Halftone dot field. Inherits colour, so set text-<colour> on the element. */
+.halftone {
+  background-image: radial-gradient(currentColor 1.6px, transparent 1.7px);
+  background-size: 12px 12px;
+}
+
+.halftone-fine {
+  background-image: radial-gradient(currentColor 1.1px, transparent 1.2px);
+  background-size: 8px 8px;
+}
+
+/* Radiating speed lines, for celebratory moments */
+.speed-lines {
+  background-image: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(23, 34, 46, 0.07) 0deg 2deg,
+    transparent 2deg 8deg
+  );
+}
+
+/* Inked panel: hard outline + solid offset shadow, like a sticker on paper */
+.panel-ink {
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 0 var(--ink);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.panel-ink-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 var(--ink);
+}
+
+.panel-ink-hover:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 var(--ink);
+}
+
+/* Speech bubble with a tail on the bottom-left */
+.speech-bubble {
+  position: relative;
+  border: 3px solid var(--ink);
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 4px 4px 0 0 var(--ink);
+}
+
+.speech-bubble::after,
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -13px;
+  left: 26px;
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 14px solid var(--ink);
+}
+
+.speech-bubble::after {
+  bottom: -9px;
+  border-top-color: #fff;
+}
+
+/* Stroked display text, comic-title style */
+.text-outline {
+  -webkit-text-stroke: 2px var(--ink);
+  paint-order: stroke fill;
+}
+
+.text-outline-thin {
+  -webkit-text-stroke: 1px var(--ink);
+  paint-order: stroke fill;
+}
+
+/* ------------------------------------------------------------------ *
+ * Scrollbar
+ * ------------------------------------------------------------------ */
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -30,15 +126,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C7E2F8;
+  background: #7EC8E3;
+  border: 2px solid #FFFDF7;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7EC8E3;
+  background: #00A0E9;
 }
 
-/* Custom pulse and glow utilities */
+/* ------------------------------------------------------------------ *
+ * Glows & loaders
+ * ------------------------------------------------------------------ */
+
 .glow-gold {
   box-shadow: 0 0 20px 2px rgba(255, 212, 71, 0.45);
 }
@@ -47,7 +147,6 @@ body {
   box-shadow: 0 0 24px 2px rgba(10, 132, 255, 0.25);
 }
 
-/* Shimmer animation effect for skeleton loader */
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
@@ -68,7 +167,6 @@ body {
   }
 }
 
-/* Golden sweep celebratory shimmer */
 .golden-sweep {
   position: relative;
   overflow: hidden;
@@ -89,6 +187,7 @@ body {
   );
   transform: rotate(25deg);
   animation: sweep 1.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes sweep {
@@ -97,5 +196,17 @@ body {
   }
   100% {
     transform: translate(100%, 100%) rotate(25deg);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

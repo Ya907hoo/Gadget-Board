@@ -43,6 +43,12 @@ interface AppContextType {
   celebratingWish: Wish | null;
   setCelebratingWish: (wish: Wish | null) => void;
 
+  // Auth & Session
+  isAuthenticated: boolean;
+  login: (user: UserPersona) => void;
+  signup: (user: UserPersona) => void;
+  logout: () => void;
+
   // Actions
   refreshWishes: () => Promise<void>;
   createWishAction: (input: { title: string; description: string; category: WishCategory; image_url?: string | null }) => Promise<{ success: boolean; error?: string }>;
@@ -56,11 +62,50 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<UserPersona>(USER_PERSONAS[0]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const [wishes, setWishes] = useState<Wish[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLiveConnected, setIsLiveConnected] = useState(false);
   const [lastLiveEvent, setLastLiveEvent] = useState<string | null>(null);
+
+  // Load session from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem("gadget_board_user");
+      if (savedUser) {
+        const parsed = JSON.parse(savedUser);
+        setCurrentUser(parsed);
+        setIsAuthenticated(true);
+      }
+    } catch (e) {
+      console.error("Error loading user session:", e);
+    }
+  }, []);
+
+  const login = (user: UserPersona) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    try {
+      localStorage.setItem("gadget_board_user", JSON.stringify(user));
+    } catch {}
+  };
+
+  const signup = (user: UserPersona) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    try {
+      localStorage.setItem("gadget_board_user", JSON.stringify(user));
+    } catch {}
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setCurrentUser(USER_PERSONAS[0]);
+    try {
+      localStorage.removeItem("gadget_board_user");
+    } catch {}
+  };
 
   // Filters
   const [category, setCategory] = useState<WishCategory | "All">("All");
@@ -305,6 +350,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       value={{
         currentUser,
         setCurrentUser,
+        isAuthenticated,
+        login,
+        signup,
+        logout,
         wishes,
         isLoading,
         isRefreshing,
